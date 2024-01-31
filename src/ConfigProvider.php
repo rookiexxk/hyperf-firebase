@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Fcorz\Hyperf\Firebase;
 
+use GuzzleHttp\Client;
+
 class ConfigProvider
 {
     public function __invoke(): array
@@ -19,14 +21,13 @@ class ConfigProvider
         defined('BASE_PATH') or define('BASE_PATH', '');
 
         return [
-            'dependencies' => [
-            ],
-            'commands' => [
-            ],
             'annotations' => [
                 'scan' => [
                     'paths' => [
                         __DIR__,
+                    ],
+                    'class_map' => [
+                        Client::class => __DIR__ . '/../classmap/GuzzleHttp/Client.php',
                     ],
                 ],
             ],

@@ -16,9 +16,10 @@
     },
     "require": {
         "php": ">=7.4",
-        "hyperf/utils": "~2.2.0",
         "hyperf/cache": "~2.2.0",
         "hyperf/logger": "~2.2.0",
+        "hyperf/utils": "~2.2.0",
+        "hyperf/guzzle": "~2.2.0",
         "kreait/firebase-php": "^6.0",
         "symfony/cache": "^5.4|^6.0"
     },
