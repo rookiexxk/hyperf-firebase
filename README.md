@@ -23,7 +23,7 @@ php bin/hyperf.php vendor:publish fcorz/hyperf-firebase
 ## Configuration
 ### Credentials with JSON files
 ```.env
-FIREBASE_CREDENTIALS=storage/app/firebase-auth.json
+FIREBASE_CREDENTIALS=config/certificates/service-account-file.json
 ```
 
 ## Usage
@@ -33,8 +33,10 @@ use Fcorz\Hyperf\Firebase\Facades\FireBase;
 
 // Return an instance of the Messaging component for the default Firebase project
 $defaultMessaging = Firebase::messaging();
+
 // Return an instance of the Auth component for a specific Firebase project
 $appMessaging = Firebase::project('app')->messaging();
+
 $anotherAppMessaging = Firebase::project('another-app')->messaging();
 
 // send message
