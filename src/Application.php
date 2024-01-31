@@ -85,7 +85,7 @@ class Application
             $this->factory = $this->factory->withDefaultStorageBucket($defaultStorageBucket);
         }
 
-        if ($cacheStore = $config['cache_store']) {
+        if ($cacheStore = data_get($config, 'cache_store')) {
             $driver = data_get($config, "stores.{$cacheStore}.driver");
             $cacheDriver = make($driver, ['config' => data_get($config, "stores.{$cacheStore}")]);
 

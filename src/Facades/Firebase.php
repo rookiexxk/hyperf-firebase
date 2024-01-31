@@ -31,7 +31,7 @@ use Psr\Container\ContainerInterface;
  * @see ApplicationFactory
  * @see Application
  */
-class FireBase
+class Firebase
 {
     public static function __callStatic($name, $arguments)
     {

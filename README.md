@@ -29,7 +29,7 @@ FIREBASE_CREDENTIALS=config/certificates/service-account-file.json
 ## Usage
 
 ```php
-use Fcorz\Hyperf\Firebase\Facades\FireBase;
+use Fcorz\Hyperf\Firebase\Facades\Firebase;
 
 // Return an instance of the Messaging component for the default Firebase project
 $defaultMessaging = Firebase::messaging();
