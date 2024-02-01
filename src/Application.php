@@ -60,7 +60,7 @@ class Application implements ApplicationInterface
         $project = sprintf('firebase.projects.%s', $this->name);
 
         if (! $this->config->get("{$project}")) {
-            throw new \RuntimeException(sprintf('Firebase project [%s}] not configured.', $this->name));
+            throw new \RuntimeException(sprintf('Firebase project [%s] not configured.', $this->name));
         }
 
         // 封装配置获取
