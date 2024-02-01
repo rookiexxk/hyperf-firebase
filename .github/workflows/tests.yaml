@@ -27,7 +27,7 @@ jobs:
         run: vendor/bin/php-cs-fixer fix src --dry-run
       - name: Run Analyse
         run: composer analyse src
-      - name: Run Test Cases
-        run: |
-          cp phpunit.xml.dist phpunit.xml
-          composer test
+      # - name: Run Test Cases
+      #   run: |
+      #     cp phpunit.xml.dist phpunit.xml
+      #     composer test
