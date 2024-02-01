@@ -1,0 +1,33 @@
+name: tests
+
+on: [push, pull_request]
+
+jobs:
+  ci:
+    name: Test on PHP ${{ matrix.php }}
+    runs-on: "${{ matrix.os }}"
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        php: ['7.4', '8.1', '8.2', '8.3']
+      max-parallel: 3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: phpize, pecl
+          extensions: swoole,redis
+          coverage: none
+      - name: Setup Packages
+        run: composer update -o
+      - name: Run Cs Fixer
+        run: vendor/bin/php-cs-fixer fix src --dry-run
+      - name: Run Analyse
+        run: composer analyse src
+      - name: Run Test Cases
+        run: |
+          cp phpunit.xml.dist phpunit.xml
+          composer test
