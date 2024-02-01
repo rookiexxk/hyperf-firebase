@@ -2,26 +2,30 @@
 
 A Hyperf package for the [Firebase PHP Admin SDK](https://github.com/kreait/firebase-php).
 
-
 ## Installation
 
-```bash
+```shell
 composer require fcorz/hyperf-firebase
 ```
 
 ## Publish
-```bash
+
+```shell
 php bin/hyperf.php vendor:publish fcorz/hyperf-firebase
 ```
 
 ## Configuration
+
 ### Credentials with JSON files
-```.env
+
+```env
 FIREBASE_CREDENTIALS=config/certificates/service-account-file.json
 ```
 
 ## Usage
+
 ### Facades
+
 ```php
 use Fcorz\Hyperf\Firebase\Facades\Firebase;
 
@@ -42,7 +46,9 @@ $message = [
 
 Firebase::messaging()->send($message);
 ```
+
 ### Dependency Injection
+
 ```php
 use Fcorz\Hyperf\Firebase\ApplicationProxy;
 

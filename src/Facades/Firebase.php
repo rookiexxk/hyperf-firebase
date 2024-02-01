@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Fcorz\Hyperf\Firebase\Facades;
 
-use Fcorz\Hyperf\Firebase\Application;
+use Fcorz\Hyperf\Firebase\ApplicationInterface;
 use Fcorz\Hyperf\Firebase\ApplicationManager;
 use Hyperf\Utils\ApplicationContext;
 
@@ -26,7 +26,7 @@ use Hyperf\Utils\ApplicationContext;
  * @method static \Kreait\Firebase\Contract\Storage storage()
  *
  * @see ApplicationManager
- * @see Application
+ * @see ApplicationInterface
  */
 class Firebase
 {
@@ -35,12 +35,11 @@ class Firebase
         return self::project()->{$name}(...$arguments);
     }
 
-    public static function project(?string $name = null): Application
+    public static function project(?string $name = null): ApplicationInterface
     {
         $container = ApplicationContext::getContainer();
-        /** @var ApplicationManager $factory */
-        $factory = $container->get(ApplicationManager::class);
+        $manager = $container->get(ApplicationManager::class);
 
-        return $factory->get($name);
+        return $manager->get($name);
     }
 }
