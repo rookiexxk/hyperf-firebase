@@ -2,15 +2,26 @@
 
 declare(strict_types=1);
 /**
- * This file is part of config-anyway.
+ * This file is part of hyperf-firebase.
  *
  * @link     https://github.com/fcorz/hyperf-firebase
  * @document https://github.com/fcorz/hyperf-firebase/blob/main/README.md
  * @contact  fengchenorz@gmail.com
  * @license  https://github.com/fcorz/hyperf-firebase/blob/main/LICENSE
  */
+use PhpCsFixer\Config;
+use PhpCsFixer\Finder;
+
+/**
+ * This file is part of hyperf-firebase.
+ *
+ * @see     https://github.com/fcorz/hyperf-firebase
+ * @document https://github.com/fcorz/hyperf-firebase/blob/main/README.md
+ * @contact  fengchenorz@gmail.com
+ * @license  https://github.com/fcorz/hyperf-firebase/blob/main/LICENSE
+ */
 $header = <<<'EOF'
-This file is part of config-anyway.
+This file is part of hyperf-firebase.
 
 @link     https://github.com/fcorz/hyperf-firebase
 @document https://github.com/fcorz/hyperf-firebase/blob/main/README.md
@@ -18,7 +29,7 @@ This file is part of config-anyway.
 @license  https://github.com/fcorz/hyperf-firebase/blob/main/LICENSE
 EOF;
 
-return (new PhpCsFixer\Config())
+return (new Config())
     ->setRiskyAllowed(true)
     ->setRules([
         '@PSR2' => true,
@@ -91,7 +102,7 @@ return (new PhpCsFixer\Config())
         'multiline_comment_opening_closing' => true,
     ])
     ->setFinder(
-        PhpCsFixer\Finder::create()
+        Finder::create()
             ->exclude('bin')
             ->exclude('public')
             ->exclude('runtime')

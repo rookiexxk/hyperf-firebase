@@ -14,10 +14,12 @@ namespace Fcorz\Hyperf\Firebase;
 
 use Psr\Container\ContainerInterface;
 
-class ApplicationFactory
+class ApplicationProxy extends Application
 {
-    public function __invoke(ContainerInterface $container): Application
+    protected string $name = 'default';
+
+    public function __construct(ContainerInterface $container)
     {
-        return $container->get(ApplicationManager::class)->get();
+        parent::__construct($container, $this->name);
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 /**
- * This file is part of config-anyway.
+ * This file is part of hyperf-firebase.
  *
  * @link     https://github.com/fcorz/hyperf-firebase
  * @document https://github.com/fcorz/hyperf-firebase/blob/main/README.md
@@ -13,13 +13,10 @@ declare(strict_types=1);
 namespace Fcorz\Hyperf\Firebase\Facades;
 
 use Fcorz\Hyperf\Firebase\Application;
-use Fcorz\Hyperf\Firebase\ApplicationFactory;
+use Fcorz\Hyperf\Firebase\ApplicationManager;
 use Hyperf\Utils\ApplicationContext;
-use Psr\Container\ContainerInterface;
 
 /**
- * @method static string getDefaultProject()
- * @method static void setDefaultProject(string $name)
  * @method static \Kreait\Firebase\Contract\Auth auth()
  * @method static \Kreait\Firebase\Contract\Database database()
  * @method static \Kreait\Firebase\Contract\DynamicLinks dynamicLinks()
@@ -28,7 +25,7 @@ use Psr\Container\ContainerInterface;
  * @method static \Kreait\Firebase\Contract\RemoteConfig remoteConfig()
  * @method static \Kreait\Firebase\Contract\Storage storage()
  *
- * @see ApplicationFactory
+ * @see ApplicationManager
  * @see Application
  */
 class Firebase
@@ -40,10 +37,9 @@ class Firebase
 
     public static function project(?string $name = null): Application
     {
-        /** @var ContainerInterface $container */
         $container = ApplicationContext::getContainer();
-        /** @var ApplicationFactory $factory */
-        $factory = $container->get(ApplicationFactory::class);
+        /** @var ApplicationManager $factory */
+        $factory = $container->get(ApplicationManager::class);
 
         return $factory->get($name);
     }

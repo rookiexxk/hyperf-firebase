@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 /**
- * This file is part of config-anyway.
+ * This file is part of hyperf-firebase.
  *
  * @link     https://github.com/fcorz/hyperf-firebase
  * @document https://github.com/fcorz/hyperf-firebase/blob/main/README.md
@@ -49,45 +49,45 @@ class Application
 
     protected string $name;
 
-    private LoggerFactory $logger;
+    private LoggerFactory $loggerFactory;
 
     public function __construct(ContainerInterface $container, string $name = 'app')
     {
+        $this->name = $name;
         $this->factory = $container->get(Factory::class);
         $this->config = $container->get(ConfigInterface::class);
-        $this->logger = $container->get(LoggerFactory::class);
-        $this->name = $name;
+        $this->loggerFactory = $container->get(LoggerFactory::class);
 
-        $config = $this->config->get('firebase.projects.' . $this->name);
+        $project = sprintf('firebase.projects.%s', $this->name);
 
-        if (! $config) {
-            throw new \RuntimeException("Firebase project [{$this->name}] not configured.");
+        if (! $this->config->get("{$project}")) {
+            throw new \RuntimeException(sprintf('Firebase project [%s}] not configured.', $this->name));
         }
 
         // 封装配置获取
-        if ($tenantId = data_get($config, 'auth.tenant_id')) {
+        if ($tenantId = $this->config->get("{$project}.auth.tenant_id")) {
             $this->factory = $this->factory->withTenantId($tenantId);
         }
 
-        if ($credentials = data_get($config, 'credentials.file') ?? data_get($config, 'credentials')) {
+        if ($credentials = $this->config->get("{$project}.credentials.file") ?? $this->config->get("{$project}.credentials")) {
             $this->factory = $this->factory->withServiceAccount($credentials);
         }
 
-        if ($databaseUrl = data_get($config, 'database.url') ?? null) {
+        if ($databaseUrl = $this->config->get("{$project}.database.url")) {
             $this->factory = $this->factory->withDatabaseUri($databaseUrl);
         }
 
-        if ($authVariableOverride = data_get($config, 'database.auth_variable_override')) {
+        if ($authVariableOverride = $this->config->get("{$project}.database.auth_variable_override")) {
             $this->factory = $this->factory->withDatabaseAuthVariableOverride($authVariableOverride);
         }
 
-        if ($defaultStorageBucket = data_get($config, 'storage.default_bucket')) {
+        if ($defaultStorageBucket = $this->config->get("{$project}.storage.default_bucket")) {
             $this->factory = $this->factory->withDefaultStorageBucket($defaultStorageBucket);
         }
 
-        if ($cacheStore = data_get($config, 'cache_store')) {
-            $driver = data_get($config, "stores.{$cacheStore}.driver");
-            $cacheDriver = make($driver, ['config' => data_get($config, "stores.{$cacheStore}")]);
+        if ($cacheStore = $this->config->get("{$project}.cache_store")) {
+            $cacheConfig = $this->config->get("{$project}.stores.{$cacheStore}");
+            $cacheDriver = make($cacheConfig['driver'], ['config' => $cacheConfig]);
 
             if ($cacheDriver instanceof CacheInterface) {
                 $cacheDriver = new Psr16Adapter($cacheDriver);
@@ -98,25 +98,25 @@ class Application
                 ->withAuthTokenCache($cacheDriver);
         }
 
-        if ($logChannel = data_get($config, 'logging.http_log_channel')) {
+        if ($logChannel = $this->config->get("{$project}.logging.http_log_channel")) {
             $this->factory = $this->factory->withHttpLogger(
-                $this->logger->make($logChannel)
+                $this->loggerFactory->make($logChannel)
             );
         }
 
-        if ($logChannel = data_get($config, 'logging.http_debug_log_channel')) {
+        if ($logChannel = $this->config->get("{$project}.logging.http_debug_log_channel")) {
             $this->factory = $this->factory->withHttpDebugLogger(
-                $this->logger->make($logChannel)
+                $this->loggerFactory->make($logChannel)
             );
         }
 
         $options = HttpClientOptions::default();
 
-        if ($proxy = data_get($config, 'http_client_options.proxy')) {
+        if ($proxy = $this->config->get("{$project}.http_client_options.proxy")) {
             $options = $options->withProxy($proxy);
         }
 
-        if ($timeout = data_get($config, 'http_client_options.timeout')) {
+        if ($timeout = $this->config->get("{$project}.http_client_options.timeout")) {
             $options = $options->withTimeOut((float) $timeout);
         }
 
@@ -144,8 +144,7 @@ class Application
     public function dynamicLinks(): DynamicLinks
     {
         if (! $this->dynamicLinks) {
-            $config = $this->config->get('firebase.projects.' . $this->name);
-            $this->dynamicLinks = $this->factory->createDynamicLinksService(data_get($config, 'dynamic_links.default_domain'));
+            $this->dynamicLinks = $this->factory->createDynamicLinksService($this->config->get("firebase.projects.{$this->name}.dynamic_links.default_domain"));
         }
 
         return $this->dynamicLinks;

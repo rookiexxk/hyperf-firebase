@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 /**
- * This file is part of config-anyway.
+ * This file is part of hyperf-firebase.
  *
  * @link     https://github.com/fcorz/hyperf-firebase
  * @document https://github.com/fcorz/hyperf-firebase/blob/main/README.md
@@ -23,9 +23,6 @@ class ConfigProvider
         return [
             'annotations' => [
                 'scan' => [
-                    'paths' => [
-                        __DIR__,
-                    ],
                     'class_map' => [
                         Client::class => __DIR__ . '/../classmap/GuzzleHttp/Client.php',
                     ],
@@ -34,7 +31,7 @@ class ConfigProvider
             'publish' => [
                 [
                     'id' => 'config',
-                    'description' => 'The config for Tinker.',
+                    'description' => 'The config for Hyperf-Firebase.',
                     'source' => __DIR__ . '/../publish/firebase.php',
                     'destination' => BASE_PATH . '/config/autoload/firebase.php',
                 ],

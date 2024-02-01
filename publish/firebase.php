@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 /**
- * This file is part of config-anyway.
+ * This file is part of hyperf-firebase.
  *
  * @link     https://github.com/fcorz/hyperf-firebase
  * @document https://github.com/fcorz/hyperf-firebase/blob/main/README.md
@@ -12,15 +12,6 @@ declare(strict_types=1);
 use Hyperf\Cache\Driver\FileSystemDriver;
 use Hyperf\Cache\Driver\RedisDriver;
 use Hyperf\Utils\Packer\PhpSerializerPacker;
-
-/*
- * This file is part of config-anyway.
- *
- * @see     https://github.com/hyperf/firebase
- * @document https://github.com/hyperf/firebase/blob/main/README.md
- * @contact  fengchenorz@gmail.com
- * @license  https://github.com/hyperf/firebase/blob/main/LICENSE
- */
 
 return [
     /*
