@@ -27,7 +27,7 @@ use Psr\Container\ContainerInterface;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\Cache\Adapter\Psr16Adapter;
 
-class Application
+class Application implements ApplicationInterface
 {
     protected Factory $factory;
 
@@ -47,13 +47,12 @@ class Application
 
     protected ?Storage $storage = null;
 
-    protected string $name;
+    protected string $name = 'app';
 
     private LoggerFactory $loggerFactory;
 
-    public function __construct(ContainerInterface $container, string $name = 'app')
+    public function __construct(ContainerInterface $container)
     {
-        $this->name = $name;
         $this->factory = $container->get(Factory::class);
         $this->config = $container->get(ConfigInterface::class);
         $this->loggerFactory = $container->get(LoggerFactory::class);

@@ -10,14 +10,16 @@ declare(strict_types=1);
  * @license  https://github.com/fcorz/hyperf-firebase/blob/main/LICENSE
  */
 
-namespace Fcorz\Hyperf\Firebase;
+namespace PHPSTORM_META;
 
+use Hyperf\Context\Context;
 use Psr\Container\ContainerInterface;
 
-class ApplicationFactory
-{
-    public function __invoke(ContainerInterface $container): Application
-    {
-        return $container->get(ApplicationManager::class)->get();
-    }
-}
+// Reflect
+override(ContainerInterface::get(0), map(['' => '@']));
+override(Context::get(0), map(['' => '@']));
+override(\make(0), map(['' => '@']));
+override(\di(0), map(['' => '@']));
+override(\app(0), map(['' => '@']));
+override(\optional(0), type(0));
+override(\tap(0), type(0));

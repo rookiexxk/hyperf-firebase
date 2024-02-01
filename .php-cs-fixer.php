@@ -12,14 +12,7 @@ declare(strict_types=1);
 use PhpCsFixer\Config;
 use PhpCsFixer\Finder;
 
-/**
- * This file is part of hyperf-firebase.
- *
- * @see     https://github.com/fcorz/hyperf-firebase
- * @document https://github.com/fcorz/hyperf-firebase/blob/main/README.md
- * @contact  fengchenorz@gmail.com
- * @license  https://github.com/fcorz/hyperf-firebase/blob/main/LICENSE
- */
+
 $header = <<<'EOF'
 This file is part of hyperf-firebase.
 

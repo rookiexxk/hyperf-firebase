@@ -18,7 +18,7 @@ use Psr\Container\ContainerInterface;
 class ApplicationManager
 {
     /**
-     * @var Application[]
+     * @var ApplicationInterface[]
      */
     protected array $applications = [];
 
@@ -29,11 +29,11 @@ class ApplicationManager
         $this->config = $container->get(ConfigInterface::class);
 
         foreach ($this->config->get('firebase.projects', []) as $name => $item) {
-            $this->applications[$name] = make(Application::class, ['name' => $name]);
+            $this->applications[$name] = make(ApplicationProxy::class, ['name' => $name]);
         }
     }
 
-    public function get(?string $name = null): Application
+    public function get(?string $name = null): ApplicationInterface
     {
         $name ??= $this->config->get('firebase.default', 'app');
 

@@ -16,10 +16,10 @@ use Psr\Container\ContainerInterface;
 
 class ApplicationProxy extends Application
 {
-    protected string $name = 'default';
-
-    public function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container, string $name = 'app')
     {
-        parent::__construct($container, $this->name);
+        parent::__construct($container);
+
+        $this->name = $name;
     }
 }

@@ -28,6 +28,9 @@ class ConfigProvider
                     ],
                 ],
             ],
+            'dependencies' => [
+                ApplicationInterface::class => fn ($container) => $container->get(ApplicationManager::class)->get(),
+            ],
             'publish' => [
                 [
                     'id' => 'config',
