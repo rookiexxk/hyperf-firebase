@@ -5,7 +5,7 @@ A Hyperf package for the [Firebase PHP Admin SDK](https://github.com/kreait/fire
 ## Installation
 
 ```shell
-composer require fcorz/hyperf-firebase
+composer require koala/hyperf-firebase
 ```
 
 ## Publish
