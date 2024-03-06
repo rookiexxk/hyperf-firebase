@@ -15,6 +15,8 @@ namespace Fcorz\Hyperf\Firebase;
 use Hyperf\Contract\ConfigInterface;
 use Psr\Container\ContainerInterface;
 
+use function Hyperf\Support\make;
+
 class ApplicationManager
 {
     /**

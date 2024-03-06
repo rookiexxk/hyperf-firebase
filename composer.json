@@ -1,5 +1,5 @@
 {
-    "name": "fcorz/hyperf-firebase",
+    "name": "koala/hyperf-firebase",
     "type": "library",
     "license": "MIT",
     "keywords": ["Hyperf", "firebase", "firebase", "sdk", "api", "database", "fcm", "gcm"],
@@ -9,18 +9,13 @@
             "Fcorz\\Hyperf\\Firebase\\": "src/"
         }
     },
-    "autoload-dev": {
-        "psr-4": {
-            "HyperfTest\\": "tests"
-        }
-    },
     "require": {
-        "php": ">=7.4",
-        "hyperf/cache": "~2.2.0",
-        "hyperf/logger": "~2.2.0",
-        "hyperf/utils": "~2.2.0",
-        "hyperf/guzzle": "~2.2.0",
-        "kreait/firebase-php": "^6.0",
+        "php": ">=8.1",
+        "hyperf/cache": "~3.1.0",
+        "hyperf/logger": "~3.1.0",
+        "hyperf/utils": "~3.1.0",
+        "hyperf/guzzle": "~3.1.0",
+        "kreait/firebase-php": "^7.0",
         "symfony/cache": "^5.4|^6.0"
     },
     "require-dev": {

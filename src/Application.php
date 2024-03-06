@@ -21,11 +21,14 @@ use Kreait\Firebase\Contract\Firestore;
 use Kreait\Firebase\Contract\Messaging;
 use Kreait\Firebase\Contract\RemoteConfig;
 use Kreait\Firebase\Contract\Storage;
+use Kreait\Firebase\Exception\InvalidArgumentException;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\Http\HttpClientOptions;
 use Psr\Container\ContainerInterface;
 use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\Cache\Adapter\Psr16Adapter;
+
+use function Hyperf\Support\make;
 
 class Application implements ApplicationInterface
 {
@@ -58,38 +61,41 @@ class Application implements ApplicationInterface
         $this->loggerFactory = $container->get(LoggerFactory::class);
 
         $project = sprintf('firebase.projects.%s', $this->name);
+        $config = $this->config->get("{$project}");
 
-        if (! $this->config->get("{$project}")) {
-            throw new \RuntimeException(sprintf('Firebase project [%s] not configured.', $this->name));
+        if (! $config) {
+            throw new InvalidArgumentException(sprintf('Firebase project [%s] not configured.', $this->name));
         }
 
         // 封装配置获取
-        if ($tenantId = $this->config->get("{$project}.auth.tenant_id")) {
+        if ($tenantId = $config['auth']['tenant_id'] ?? null) {
             $this->factory = $this->factory->withTenantId($tenantId);
         }
 
-        if ($credentials = $this->config->get("{$project}.credentials.file") ?? $this->config->get("{$project}.credentials")) {
+        if ($credentials = $config['credentials']['file'] ?? ($config['credentials'] ?? null)) {
             $this->factory = $this->factory->withServiceAccount($credentials);
         }
 
-        if ($databaseUrl = $this->config->get("{$project}.database.url")) {
+        if ($databaseUrl = $config['database']['url'] ?? null) {
             $this->factory = $this->factory->withDatabaseUri($databaseUrl);
         }
 
-        if ($authVariableOverride = $this->config->get("{$project}.database.auth_variable_override")) {
+        if ($authVariableOverride = $config['database']['auth_variable_override'] ?? null) {
             $this->factory = $this->factory->withDatabaseAuthVariableOverride($authVariableOverride);
         }
 
-        if ($defaultStorageBucket = $this->config->get("{$project}.storage.default_bucket")) {
+        if ($defaultStorageBucket = $config['storage']['default_bucket'] ?? null) {
             $this->factory = $this->factory->withDefaultStorageBucket($defaultStorageBucket);
         }
 
-        if ($cacheStore = $this->config->get("{$project}.cache_store")) {
-            $cacheConfig = $this->config->get("{$project}.stores.{$cacheStore}");
+        if ($cacheStore = $config['cache_store'] ?? null) {
+            $cacheConfig = $config['stores'][$cacheStore];
             $cacheDriver = make($cacheConfig['driver'], ['config' => $cacheConfig]);
 
             if ($cacheDriver instanceof CacheInterface) {
                 $cacheDriver = new Psr16Adapter($cacheDriver);
+            } else {
+                throw new InvalidArgumentException('The cache store must be an instance of a PSR-6 or PSR-16 cache');
             }
 
             $this->factory = $this->factory
@@ -97,13 +103,13 @@ class Application implements ApplicationInterface
                 ->withAuthTokenCache($cacheDriver);
         }
 
-        if ($logChannel = $this->config->get("{$project}.logging.http_log_channel")) {
+        if ($logChannel = $config['logging']['http_log_channel'] ?? null) {
             $this->factory = $this->factory->withHttpLogger(
                 $this->loggerFactory->make($logChannel)
             );
         }
 
-        if ($logChannel = $this->config->get("{$project}.logging.http_debug_log_channel")) {
+        if ($logChannel = $config['logging']['http_debug_log_channel'] ?? null) {
             $this->factory = $this->factory->withHttpDebugLogger(
                 $this->loggerFactory->make($logChannel)
             );
@@ -111,11 +117,11 @@ class Application implements ApplicationInterface
 
         $options = HttpClientOptions::default();
 
-        if ($proxy = $this->config->get("{$project}.http_client_options.proxy")) {
+        if ($proxy = $config['http_client_options']['proxy'] ?? null) {
             $options = $options->withProxy($proxy);
         }
 
-        if ($timeout = $this->config->get("{$project}.http_client_options.timeout")) {
+        if ($timeout = $config['http_client_options']['timeout'] ?? null) {
             $options = $options->withTimeOut((float) $timeout);
         }
 

@@ -14,7 +14,7 @@ namespace Fcorz\Hyperf\Firebase\Facades;
 
 use Fcorz\Hyperf\Firebase\ApplicationInterface;
 use Fcorz\Hyperf\Firebase\ApplicationManager;
-use Hyperf\Utils\ApplicationContext;
+use Hyperf\Context\ApplicationContext;
 
 /**
  * @method static \Kreait\Firebase\Contract\Auth auth()
