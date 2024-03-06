@@ -1,5 +1,5 @@
 {
-    "name": "koala/hyperf-firebase",
+    "name": "xiaoxie110/hyperf-firebase",
     "type": "library",
     "license": "MIT",
     "keywords": ["Hyperf", "firebase", "firebase", "sdk", "api", "database", "fcm", "gcm"],
